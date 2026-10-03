@@ -8,3 +8,4 @@ class FDDFinding(BaseModel):
     evidence: str
     source: str
     page: int
+    human_review_status: Literal["Pending", "Approved", "Rejected", "Amended"] = "Pending"
