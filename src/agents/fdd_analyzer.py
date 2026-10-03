@@ -32,12 +32,16 @@ Question:
 Evidence:
 {evidence_text}
 
+confidence:
+Return a number between 0 and 1.
+
 Return valid JSON with exactly these fields:
 - finding
 - risk_level
 - evidence
 - source
 - page
+- confidence
 
 Do not invent facts that are not supported by the evidence.
 """
