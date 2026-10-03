@@ -1,4 +1,4 @@
-from pydantic import BaseModel,field_validator
+from pydantic import BaseModel,field_validator,Field
 from typing import Literal
 
 
@@ -8,7 +8,7 @@ class FDDFinding(BaseModel):
     evidence: str
     source: str
     page: int
-    confidence: float
+    confidence: float = Field(..., ge=0, le=1)   
     human_review_status: Literal["Pending", "Approved", "Rejected", "Amended"] = "Pending"
    
     @field_validator("risk_level")
