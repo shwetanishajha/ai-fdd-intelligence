@@ -1,7 +1,9 @@
 import json
 
+
 from dotenv import load_dotenv
 from openai import OpenAI
+from src.agents.models import FDDFinding
 
 from src.retrieval.search import search_documents
 
@@ -56,4 +58,6 @@ Do not invent facts that are not supported by the evidence.
         ],
     )
 
-    return json.loads(response.choices[0].message.content)
+    return FDDFinding.model_validate(
+    json.loads(response.choices[0].message.content)
+).model_dump()
