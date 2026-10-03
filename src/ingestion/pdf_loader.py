@@ -15,6 +15,7 @@ def load_pdf(file_path: str) -> list[dict]:
 
     for page_number, page in enumerate(reader.pages, start=1):
         text = page.extract_text() or ""
+        text = text.replace("Â£", "£")
 
         pages.append(
             {
