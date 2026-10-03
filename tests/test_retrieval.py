@@ -15,3 +15,5 @@ def test_customer_concentration_retrieval():
         result["source"] == "fdd_report.pdf"
         for result in results
     )
+
+
