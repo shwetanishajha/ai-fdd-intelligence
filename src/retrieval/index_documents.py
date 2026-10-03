@@ -13,7 +13,7 @@ def index_pdf(file_path: str) -> int:
 
     collection = create_vector_store()
 
-    collection.add(
+    collection.upsert(
         ids=[f"{chunk['source']}-{chunk['page']}-{i}"
              for i, chunk in enumerate(chunks)],
         documents=texts,
