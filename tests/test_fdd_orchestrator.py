@@ -19,3 +19,13 @@ def test_unsupported_question():
 
     assert result["selected_agent"] is None
     assert result["result"] is None
+
+def test_working_capital_routing():
+    result = run_fdd_orchestrator(
+        "How did working capital change?"
+    )
+
+    assert result["orchestrator"] == "FDD Orchestrator"
+    assert result["selected_agent"] == "Working Capital Agent"
+    assert result["result"]["change"] == 1100000
+    assert result["result"]["risk_level"] == "Medium"
