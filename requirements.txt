@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+openai
+pypdf
+pandas
+openpyxl
+chromadb
+pytest
+httpx
