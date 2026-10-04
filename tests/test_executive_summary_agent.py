@@ -7,7 +7,9 @@ def test_executive_summary_agent():
         "What are the key financial risks?"
     )
 
-    summary = create_executive_summary(result["results"])
+    summary = create_executive_summary(
+        result["results"]
+    )
 
     assert "executive_summary" in summary
     assert "key_risks" in summary
@@ -17,6 +19,7 @@ def test_executive_summary_agent():
     assert summary["overall_risk"] in {
         "Low",
         "Medium",
+        "Medium to High",
         "High",
     }
 

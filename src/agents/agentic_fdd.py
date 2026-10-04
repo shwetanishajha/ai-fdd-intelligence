@@ -20,6 +20,17 @@ def run_agentic_fdd(question: str) -> dict:
     return {
         "question": question,
         "plan": plan,
+        "execution": {
+            "agents_requested": plan["selected_agents"],
+            "agents_executed": [
+                result["agent"]
+                for result in specialist_results
+            ],
+            "agent_count": len(specialist_results),
+            "executive_summary_generated": (
+                executive_summary is not None
+            ),
+        },
         "results": specialist_results,
         "executive_summary": executive_summary,
     }

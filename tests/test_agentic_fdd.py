@@ -18,6 +18,19 @@ def test_agentic_fdd_end_to_end():
     assert "further_diligence" in summary
     assert "overall_risk" in summary
 
+    execution = result["execution"]
+
+    assert execution["agents_requested"]
+    assert execution["agents_executed"]
+    assert (
+        execution["agents_requested"]
+        == execution["agents_executed"]
+    )
+    assert execution["agent_count"] == len(
+        execution["agents_executed"]
+    )
+    assert execution["executive_summary_generated"] is True
+
 
 def test_agentic_fdd_single_agent_question():
     result = run_agentic_fdd(
@@ -26,3 +39,13 @@ def test_agentic_fdd_single_agent_question():
 
     assert "EBITDA Agent" in result["plan"]["selected_agents"]
     assert len(result["results"]) >= 1
+
+    execution = result["execution"]
+
+    assert execution["agents_requested"]
+    assert execution["agents_executed"]
+    assert execution["agent_count"] == len(
+        execution["agents_executed"]
+    )
+    assert execution["executive_summary_generated"] is False
+    assert result["executive_summary"] is None
