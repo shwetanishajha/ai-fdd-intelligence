@@ -39,3 +39,13 @@ def test_revenue_routing():
     assert result["selected_agent"] == "Revenue Agent"
     assert result["result"]["revenue_growth"] == 13.68
     assert result["result"]["risk_level"] == "Low"
+
+def test_financial_anomaly_routing():
+    result = run_fdd_orchestrator(
+        "What financial anomalies require further diligence?"
+    )
+
+    assert result["orchestrator"] == "FDD Orchestrator"
+    assert result["selected_agent"] == "Financial Anomaly Agent"
+    assert result["result"]["risk_level"] == "Medium"
+    assert len(result["result"]["finding"]) > 0

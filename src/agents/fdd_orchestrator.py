@@ -4,6 +4,7 @@ from src.agents.customer_concentration_agent import (
 from src.agents.ebitda_agent import analyze_ebitda
 from src.agents.working_capital_agent import analyze_working_capital
 from src.agents.revenue_agent import analyze_revenue
+from src.agents.anomaly_agent import analyze_financial_anomalies
 
 
 def run_fdd_orchestrator(question: str) -> dict:
@@ -64,6 +65,21 @@ def run_fdd_orchestrator(question: str) -> dict:
             "orchestrator": "FDD Orchestrator",
             "selected_agent": "Revenue Agent",
             "result": analyze_revenue(),
+        }
+    if any(
+        keyword in question_lower
+        for keyword in [
+            "anomaly",
+            "anomalies",
+            "unusual movement",
+            "unusual movements",
+            "financial risk",
+        ]
+    ):
+        return {
+            "orchestrator": "FDD Orchestrator",
+            "selected_agent": "Financial Anomaly Agent",
+            "result": analyze_financial_anomalies(),
         }
 
     return {
