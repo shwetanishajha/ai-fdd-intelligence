@@ -23,7 +23,6 @@ def test_fdd_end_to_end():
     assert summary["overall_risk"] in {
         "Low",
         "Medium",
-        "Medium to High",
         "High",
     }
 

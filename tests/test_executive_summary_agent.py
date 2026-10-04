@@ -19,7 +19,6 @@ def test_executive_summary_agent():
     assert summary["overall_risk"] in {
         "Low",
         "Medium",
-        "Medium to High",
         "High",
     }
 
