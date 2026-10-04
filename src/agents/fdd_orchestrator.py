@@ -5,6 +5,7 @@ from src.agents.ebitda_agent import analyze_ebitda
 from src.agents.working_capital_agent import analyze_working_capital
 from src.agents.revenue_agent import analyze_revenue
 from src.agents.anomaly_agent import analyze_financial_anomalies
+from src.agents.executive_summary_agent import create_executive_summary
 
 
 def run_fdd_orchestrator(question: str) -> dict:
@@ -19,6 +20,18 @@ def run_fdd_orchestrator(question: str) -> dict:
             "key findings",
         ]
     ):
+        specialist_results = [
+            analyze_revenue(),
+            analyze_ebitda(),
+            analyze_working_capital(),
+            analyze_customer_concentration(),
+            analyze_financial_anomalies(),
+        ]
+
+        executive_summary = create_executive_summary(
+            specialist_results
+        )
+
         return {
             "orchestrator": "FDD Orchestrator",
             "selected_agents": [
@@ -28,15 +41,9 @@ def run_fdd_orchestrator(question: str) -> dict:
                 "Customer Concentration Agent",
                 "Financial Anomaly Agent",
             ],
-            "results": [
-                analyze_revenue(),
-                analyze_ebitda(),
-                analyze_working_capital(),
-                analyze_customer_concentration(),
-                analyze_financial_anomalies(),
-            ],
-        }
-
+            "results": specialist_results,
+            "executive_summary": executive_summary,
+    }
     if any(
         keyword in question_lower
         for keyword in [
