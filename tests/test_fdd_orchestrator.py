@@ -29,3 +29,13 @@ def test_working_capital_routing():
     assert result["selected_agent"] == "Working Capital Agent"
     assert result["result"]["change"] == 1100000
     assert result["result"]["risk_level"] == "Medium"
+
+def test_revenue_routing():
+    result = run_fdd_orchestrator(
+        "How did revenue change?"
+    )
+
+    assert result["orchestrator"] == "FDD Orchestrator"
+    assert result["selected_agent"] == "Revenue Agent"
+    assert result["result"]["revenue_growth"] == 13.68
+    assert result["result"]["risk_level"] == "Low"

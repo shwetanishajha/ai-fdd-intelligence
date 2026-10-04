@@ -3,6 +3,7 @@ from src.agents.customer_concentration_agent import (
 )
 from src.agents.ebitda_agent import analyze_ebitda
 from src.agents.working_capital_agent import analyze_working_capital
+from src.agents.revenue_agent import analyze_revenue
 
 
 def run_fdd_orchestrator(question: str) -> dict:
@@ -50,9 +51,25 @@ def run_fdd_orchestrator(question: str) -> dict:
             "result": analyze_working_capital(),
         }
 
+    if any(
+        keyword in question_lower
+        for keyword in [
+            "revenue",
+            "revenue growth",
+            "revenue quality",
+            "sales growth",
+        ]
+    ):
+        return {
+            "orchestrator": "FDD Orchestrator",
+            "selected_agent": "Revenue Agent",
+            "result": analyze_revenue(),
+        }
+
     return {
         "orchestrator": "FDD Orchestrator",
         "selected_agent": None,
         "result": None,
         "message": "No specialist agent currently supports this question.",
     }
+    
