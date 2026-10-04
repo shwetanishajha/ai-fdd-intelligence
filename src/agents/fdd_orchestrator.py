@@ -9,6 +9,33 @@ from src.agents.anomaly_agent import analyze_financial_anomalies
 
 def run_fdd_orchestrator(question: str) -> dict:
     question_lower = question.lower()
+    if any(
+        keyword in question_lower
+        for keyword in [
+            "key financial risks",
+            "overall financial risks",
+            "overall fdd",
+            "financial overview",
+            "key findings",
+        ]
+    ):
+        return {
+            "orchestrator": "FDD Orchestrator",
+            "selected_agents": [
+                "Revenue Agent",
+                "EBITDA Agent",
+                "Working Capital Agent",
+                "Customer Concentration Agent",
+                "Financial Anomaly Agent",
+            ],
+            "results": [
+                analyze_revenue(),
+                analyze_ebitda(),
+                analyze_working_capital(),
+                analyze_customer_concentration(),
+                analyze_financial_anomalies(),
+            ],
+        }
 
     if any(
         keyword in question_lower

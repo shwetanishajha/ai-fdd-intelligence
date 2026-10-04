@@ -49,3 +49,20 @@ def test_financial_anomaly_routing():
     assert result["selected_agent"] == "Financial Anomaly Agent"
     assert result["result"]["risk_level"] == "Medium"
     assert len(result["result"]["finding"]) > 0
+
+def test_multi_agent_fdd_analysis():
+    result = run_fdd_orchestrator(
+        "What are the key financial risks?"
+    )
+
+    expected_agents = {
+        "Revenue Agent",
+        "EBITDA Agent",
+        "Working Capital Agent",
+        "Customer Concentration Agent",
+        "Financial Anomaly Agent",
+    }
+
+    assert result["orchestrator"] == "FDD Orchestrator"
+    assert set(result["selected_agents"]) == expected_agents
+    assert len(result["results"]) == 5
