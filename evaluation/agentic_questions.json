@@ -1,0 +1,27 @@
+[
+  {
+    "question": "What is the main customer concentration risk?",
+    "expected_agent": "Customer Concentration Agent",
+    "expected_text": "38%"
+  },
+  {
+    "question": "What was FY2025 revenue?",
+    "expected_agent": "Revenue Agent",
+    "expected_text": "£54.0 million"
+  },
+  {
+    "question": "What was the FY2025 EBITDA margin?",
+    "expected_agent": "EBITDA Agent",
+    "expected_text": "17.0%"
+  },
+  {
+    "question": "How did working capital change?",
+    "expected_agent": "Working Capital Agent",
+    "expected_text": "£6.1 million"
+  },
+  {
+    "question": "What are the key financial risks?",
+    "expected_agent": "Revenue Agent",
+    "expected_text": "Revenue increased"
+  }
+]
