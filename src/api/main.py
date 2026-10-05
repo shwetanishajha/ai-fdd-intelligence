@@ -1,5 +1,8 @@
 from fastapi import FastAPI
+
 from src.agents.fdd_analyzer import analyze_fdd_question
+from src.agents.agentic_fdd import run_agentic_fdd
+
 
 app = FastAPI(
     title="AI-FDD Intelligence",
@@ -12,9 +15,12 @@ app = FastAPI(
 def health_check():
     return {"status": "healthy"}
 
-    from src.agents.fdd_analyzer import analyze_fdd_question
-
 
 @app.get("/fdd/analyze")
 def analyze(question: str):
     return analyze_fdd_question(question)
+
+
+@app.get("/fdd/agentic")
+def agentic_analyze(question: str):
+    return run_agentic_fdd(question)
