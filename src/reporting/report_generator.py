@@ -11,7 +11,7 @@ from reportlab.platypus import (
 
 
 def format_value(key: str, value) -> str:
-    """Format report values for executive readability."""
+    """Format report values for readable output."""
 
     key_lower = key.lower()
 
@@ -23,34 +23,40 @@ def format_value(key: str, value) -> str:
 
     if isinstance(value, (int, float)):
 
-        # Monetary values
-        if any(term in key_lower for term in [
-            "revenue",
-            "ebitda",
-            "working_capital",
-            "change",
-        ]):
-            if abs(value) >= 1_000_000:
-                return f"£{value / 1_000_000:.2f} million"
-            return f"£{value:,.0f}"
-
-        # Percentages
-        if any(term in key_lower for term in [
-            "growth",
-            "margin",
-            "percentage",
-            "concentration",
-        ]):
+        # Percentage values
+        if any(
+            term in key_lower
+            for term in [
+                "growth",
+                "margin",
+                "percentage",
+                "concentration",
+            ]
+        ):
             return f"{value:.1f}%"
 
-        # Generic numbers
+        # Monetary values
+        if any(
+            term in key_lower
+            for term in [
+                "revenue",
+                "ebitda",
+                "working_capital",
+                "change",
+            ]
+        ):
+            if abs(value) >= 1_000_000:
+                return f"£{value / 1_000_000:.2f} million"
+
+            return f"£{value:,.0f}"
+
         return f"{value:,.1f}"
 
     return str(value)
 
 
 def add_dict_content(story, content, styles):
-    """Render dictionary content cleanly."""
+    """Render dictionary content safely."""
 
     for key, value in content.items():
 
@@ -60,21 +66,41 @@ def add_dict_content(story, content, styles):
         label = key.replace("_", " ").title()
 
         if isinstance(value, dict):
+
             story.append(
-                Paragraph(f"<b>{label}</b>", styles["Heading2"])
+                Paragraph(
+                    f"<b>{label}</b>",
+                    styles["Heading2"],
+                )
             )
-            add_dict_content(story, value, styles)
+
+            add_dict_content(
+                story,
+                value,
+                styles,
+            )
 
         elif isinstance(value, list):
 
             story.append(
-                Paragraph(f"<b>{label}:</b>", styles["BodyText"])
+                Paragraph(
+                    f"<b>{label}:</b>",
+                    styles["BodyText"],
+                )
             )
 
             for item in value:
+
                 if isinstance(item, dict):
-                    add_dict_content(story, item, styles)
+
+                    add_dict_content(
+                        story,
+                        item,
+                        styles,
+                    )
+
                 else:
+
                     story.append(
                         Paragraph(
                             f"• {item}",
@@ -83,7 +109,11 @@ def add_dict_content(story, content, styles):
                     )
 
         else:
-            formatted = format_value(key, value)
+
+            formatted = format_value(
+                key,
+                value,
+            )
 
             story.append(
                 Paragraph(
@@ -92,13 +122,22 @@ def add_dict_content(story, content, styles):
                 )
             )
 
-        story.append(Spacer(1, 6))
+        story.append(
+            Spacer(1, 6)
+        )
 
 
-def generate_fdd_pdf(report: dict, output_path: str) -> str:
+def generate_fdd_pdf(
+    report: dict,
+    output_path: str,
+) -> str:
 
     path = Path(output_path)
-    path.parent.mkdir(parents=True, exist_ok=True)
+
+    path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
 
     doc = SimpleDocTemplate(
         str(path),
@@ -110,16 +149,31 @@ def generate_fdd_pdf(report: dict, output_path: str) -> str:
     )
 
     styles = getSampleStyleSheet()
+
     story = []
 
-    def add_section(title: str, content):
+    # =========================================================
+    # Standard Sections
+    # =========================================================
+
+    def add_section(
+        title: str,
+        content,
+    ):
 
         story.append(
-            Paragraph(title, styles["Heading1"])
+            Paragraph(
+                title,
+                styles["Heading1"],
+            )
         )
-        story.append(Spacer(1, 10))
+
+        story.append(
+            Spacer(1, 10)
+        )
 
         if isinstance(content, dict):
+
             add_dict_content(
                 story,
                 content,
@@ -131,6 +185,7 @@ def generate_fdd_pdf(report: dict, output_path: str) -> str:
             for item in content:
 
                 if isinstance(item, dict):
+
                     add_dict_content(
                         story,
                         item,
@@ -138,6 +193,7 @@ def generate_fdd_pdf(report: dict, output_path: str) -> str:
                     )
 
                 else:
+
                     story.append(
                         Paragraph(
                             f"• {item}",
@@ -145,9 +201,12 @@ def generate_fdd_pdf(report: dict, output_path: str) -> str:
                         )
                     )
 
-                story.append(Spacer(1, 6))
+                story.append(
+                    Spacer(1, 6)
+                )
 
         else:
+
             story.append(
                 Paragraph(
                     str(content),
@@ -155,26 +214,62 @@ def generate_fdd_pdf(report: dict, output_path: str) -> str:
                 )
             )
 
-        story.append(PageBreak())
+        story.append(
+            PageBreak()
+        )
 
     sections = [
-        ("Executive Summary", report["executive_summary"]),
-        ("Company Overview", report["company_overview"]),
-        ("Revenue Analysis", report["revenue_analysis"]),
-        ("EBITDA Analysis", report["ebitda_analysis"]),
-        ("Working Capital Analysis", report["working_capital_analysis"]),
-        ("Customer Concentration", report["customer_concentration"]),
-        ("Financial Anomalies", report["financial_anomalies"]),
+        (
+            "Executive Summary",
+            report["executive_summary"],
+        ),
+        (
+            "Company Overview",
+            report["company_overview"],
+        ),
+        (
+            "Revenue Analysis",
+            report["revenue_analysis"],
+        ),
+        (
+            "EBITDA Analysis",
+            report["ebitda_analysis"],
+        ),
+        (
+            "Working Capital Analysis",
+            report["working_capital_analysis"],
+        ),
+        (
+            "Customer Concentration",
+            report["customer_concentration"],
+        ),
+        (
+            "Financial Anomalies",
+            report["financial_anomalies"],
+        ),
     ]
 
     for title, content in sections:
-        add_section(title, content)
 
+        add_section(
+            title,
+            content,
+        )
+
+    # =========================================================
     # Key Risks
+    # =========================================================
+
     story.append(
-        Paragraph("Key Risks", styles["Heading1"])
+        Paragraph(
+            "Key Risks",
+            styles["Heading1"],
+        )
     )
-    story.append(Spacer(1, 10))
+
+    story.append(
+        Spacer(1, 10)
+    )
 
     for risk in report["key_risks"]:
 
@@ -185,77 +280,195 @@ def generate_fdd_pdf(report: dict, output_path: str) -> str:
             )
         )
 
-        for evidence in risk["evidence"]:
+        evidence = risk.get(
+            "evidence",
+            "",
+        )
+
+        if isinstance(evidence, list):
+
+            for item in evidence:
+
+                if isinstance(item, dict):
+
+                    evidence_text = item.get(
+                        "text",
+                        str(item),
+                    )
+
+                else:
+
+                    evidence_text = str(item)
+
+                story.append(
+                    Paragraph(
+                        f"Evidence: {evidence_text}",
+                        styles["BodyText"],
+                    )
+                )
+
+        elif isinstance(evidence, dict):
+
+            evidence_text = evidence.get(
+                "text",
+                str(evidence),
+            )
 
             story.append(
                 Paragraph(
-                    f"Evidence: {evidence.get('text', '')}",
+                    f"Evidence: {evidence_text}",
                     styles["BodyText"],
                 )
             )
 
-        story.append(Spacer(1, 10))
+        else:
 
-    story.append(PageBreak())
+            story.append(
+                Paragraph(
+                    f"Evidence: {evidence}",
+                    styles["BodyText"],
+                )
+            )
 
+        story.append(
+            Spacer(1, 10)
+        )
+
+    story.append(
+        PageBreak()
+    )
+
+    # =========================================================
     # Further Diligence
+    # =========================================================
+
     story.append(
         Paragraph(
             "Further Diligence",
             styles["Heading1"],
         )
     )
-    story.append(Spacer(1, 10))
+
+    story.append(
+        Spacer(1, 10)
+    )
 
     diligence = report["further_diligence"]
 
     if isinstance(diligence, dict):
 
-        areas = diligence.get("areas", [])
+        areas = diligence.get(
+            "areas",
+            [],
+        )
 
-        for area in areas:
+        if isinstance(areas, list):
+
+            for area in areas:
+
+                story.append(
+                    Paragraph(
+                        f"• {area}",
+                        styles["BodyText"],
+                    )
+                )
+
+                story.append(
+                    Spacer(1, 6)
+                )
+
+        else:
+
             story.append(
                 Paragraph(
-                    f"• {area}",
+                    str(areas),
                     styles["BodyText"],
                 )
             )
-            story.append(Spacer(1, 6))
 
     elif isinstance(diligence, list):
 
         for item in diligence:
+
             story.append(
                 Paragraph(
                     f"• {item}",
                     styles["BodyText"],
                 )
             )
-            story.append(Spacer(1, 6))
 
-    story.append(PageBreak())
+            story.append(
+                Spacer(1, 6)
+            )
 
+    else:
+
+        story.append(
+            Paragraph(
+                str(diligence),
+                styles["BodyText"],
+            )
+        )
+
+    story.append(
+        PageBreak()
+    )
+
+    # =========================================================
     # Evidence Register
+    # =========================================================
+
     story.append(
         Paragraph(
             "Evidence Register",
             styles["Heading1"],
         )
     )
-    story.append(Spacer(1, 10))
+
+    story.append(
+        Spacer(1, 10)
+    )
 
     for evidence in report["evidence_register"]:
 
-        story.append(
-            Paragraph(
-                f"<b>Source:</b> {evidence.get('source', '')}<br/>"
-                f"<b>Page:</b> {evidence.get('page', '')}<br/>"
-                f"<b>Evidence:</b> {evidence.get('text', '')}",
-                styles["BodyText"],
-            )
-        )
+        if isinstance(evidence, dict):
 
-        story.append(Spacer(1, 10))
+            source = evidence.get(
+                "source",
+                "",
+            )
+
+            page = evidence.get(
+                "page",
+                "",
+            )
+
+            text = evidence.get(
+                "text",
+                "",
+            )
+
+            story.append(
+                Paragraph(
+                    f"<b>Source:</b> {source}<br/>"
+                    f"<b>Page:</b> {page}<br/>"
+                    f"<b>Evidence:</b> {text}",
+                    styles["BodyText"],
+                )
+            )
+
+        else:
+
+            story.append(
+                Paragraph(
+                    f"<b>Evidence:</b> {evidence}",
+                    styles["BodyText"],
+                )
+            )
+
+        story.append(
+            Spacer(1, 10)
+        )
 
     doc.build(story)
 

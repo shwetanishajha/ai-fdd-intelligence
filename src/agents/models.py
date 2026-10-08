@@ -17,9 +17,14 @@ class FDDFinding(BaseModel):
     source: str
     page: int
     confidence: float = Field(..., ge=0, le=1)
+
     human_review_status: Literal[
-        "Pending", "Approved", "Rejected", "Amended"
+        "Pending",
+        "Approved",
+        "Rejected",
+        "Amended",
     ] = "Pending"
+
     provenance: FindingProvenance | None = None
 
     @field_validator("risk_level")
@@ -27,15 +32,21 @@ class FDDFinding(BaseModel):
     def normalise_risk_level(cls, value: str) -> str:
         value = value.capitalize()
 
-        if value not in {"Low", "Medium", "High"}:
-            raise ValueError("risk_level must be Low, Medium, or High")
+        if value not in {
+            "Low",
+            "Medium",
+            "High",
+        }:
+            raise ValueError(
+                "risk_level must be Low, Medium, or High"
+            )
 
         return value
 
 
 class KeyRisk(BaseModel):
     risk: str
-    evidence: str | list[dict]
+    evidence: str | dict | list[dict]
 
 
 class FDDReport(BaseModel):
@@ -46,6 +57,12 @@ class FDDReport(BaseModel):
     working_capital_analysis: dict
     customer_concentration: dict
     financial_anomalies: dict
-    key_risks: list[KeyRisk] = Field(min_length=1)
+
+    key_risks: list[KeyRisk] = Field(
+        min_length=1
+    )
+
     further_diligence: dict
-    evidence_register: list[dict] = Field(min_length=1)
+    evidence_register: list[dict] = Field(
+        min_length=1
+    )
