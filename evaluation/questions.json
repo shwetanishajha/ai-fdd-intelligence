@@ -6,7 +6,7 @@
     "expected_page": 1
   },
   {
-    "question": "What was FY2025 revenue?",
+    "question": "What was the FY2025 revenue?",
     "expected_evidence": "FY2025 Revenue: £54.0 million",
     "expected_source": "fdd_report.pdf",
     "expected_page": 1
@@ -18,14 +18,14 @@
     "expected_page": 1
   },
   {
-    "question": "How did working capital change?",
+    "question": "How did working capital change from FY2024 to FY2025?",
     "expected_evidence": "Working capital increased from £6.1 million in FY2024 to £7.2 million in FY2025.",
     "expected_source": "fdd_report.pdf",
     "expected_page": 1
   },
   {
     "question": "What areas require further diligence?",
-    "expected_evidence": "Customer concentration, revenue quality, EBITDA sustainability, working capital movements, and cost trends.",
+    "expected_evidence": "Customer concentration, Revenue quality, EBITDA sustainability, Working capital movements, Cost trends",
     "expected_source": "fdd_report.pdf",
     "expected_page": 1
   }

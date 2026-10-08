@@ -1,0 +1,19 @@
+{
+  "dimensions": {
+    "retrieval_relevance": {
+      "description": "Whether retrieved evidence is relevant to the question"
+    },
+    "evidence_correctness": {
+      "description": "Whether the generated finding is supported by retrieved evidence"
+    },
+    "citation_correctness": {
+      "description": "Whether source and page metadata correctly identify the evidence"
+    },
+    "calculation_accuracy": {
+      "description": "Whether financial calculations match deterministic validation logic"
+    },
+    "groundedness": {
+      "description": "Whether the response remains within the supplied evidence"
+    }
+  }
+}

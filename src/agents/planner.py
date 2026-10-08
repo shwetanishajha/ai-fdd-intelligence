@@ -1,12 +1,8 @@
 import json
 
-from dotenv import load_dotenv
-from openai import OpenAI
 from pydantic import BaseModel, Field
 
-load_dotenv()
-
-client = OpenAI()
+from src.core.llm_client import call_llm
 
 
 ALLOWED_AGENTS = {
@@ -55,10 +51,7 @@ Return JSON with exactly these fields:
 - requires_executive_summary
 """
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        temperature=0,
-        response_format={"type": "json_object"},
+    response = call_llm(
         messages=[
             {
                 "role": "system",
@@ -72,6 +65,9 @@ Return JSON with exactly these fields:
                 "content": prompt,
             },
         ],
+        model="gpt-4o-mini",
+        temperature=0,
+        response_format={"type": "json_object"},
     )
 
     plan = FDDPlan.model_validate(
