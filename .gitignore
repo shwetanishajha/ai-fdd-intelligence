@@ -219,3 +219,5 @@ __marimo__/
 
 # Local vector database
 data/chroma/
+
+data/fdd_report_generated.pdf
